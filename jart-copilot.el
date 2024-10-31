@@ -72,10 +72,14 @@
   :group 'editing)
 
 (defcustom copilot-bin
-  "wizardcoder-python-34b-v1.0.Q5_K_M.llamafile"
-  "Path of llamafile executable with LLM weights."
+  "ollama"
   :type 'string
-  :group 'copilot)
+  :group 'jart-copilot)
+
+(defcustom copilot-model
+  "llama3.1:1b"
+  :type 'string
+  :group 'jart-copilot)
 
 ;;;###autoload
 (defun copilot-complete ()
@@ -125,15 +129,9 @@ Writing English explanations is forbidden. ")
     ;; run llamafile streaming stdout into buffer catching ctrl-g
     (with-local-quit
       (call-process copilot-bin nil (list (current-buffer) nil) t
-                    "--prompt-cache" cash
-                    "--prompt-cache-all"
-                    "--silent-prompt"
-                    "--temp" "0"
-                    "-c" "1024"
-                    "-ngl" "35"
-                    "-r" "```"
-                    "-r" "\n}"
-                    "-f" hist))
+                    "run"
+                    copilot-model
+                    hist))
 
     ;; get rid of most markdown syntax
     (let ((end (point)))
@@ -151,15 +149,6 @@ Writing English explanations is forbidden. ")
       ;; append generated code to prompt
       (write-region spot end hist 'append 'silent))))
 
-;; define `ctrl-c ctrl-k` keybinding for llm code completion
-(defun copilot-c-hook ()
-  (define-key c-mode-base-map (kbd "C-c C-k") 'copilot-complete))
-(add-hook 'c-mode-common-hook 'copilot-c-hook)
-(defun copilot-py-hook ()
-  (define-key python-mode-map (kbd "C-c C-k") 'copilot-complete))
-(add-hook 'python-common-hook 'copilot-py-hook)
-(global-set-key (kbd "C-c C-k") 'copilot-complete)
-
-(provide 'copilot)
+(provide 'jart-copilot)
 
 ;;; ansi-mode.el ends here

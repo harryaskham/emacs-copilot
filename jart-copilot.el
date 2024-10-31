@@ -4,6 +4,7 @@
 
 ;; Author: Justine Tunney
 ;; Email: jtunney@mozilla.com
+;; URL: https://github.com/jart/emacs-copilot
 ;; License: Apache 2.0
 ;; Version: 0.1
 
@@ -83,6 +84,7 @@
 
 ;;;###autoload
 (defun jart-copilot-complete ()
+  "Complete code at point using a large language model."
   (interactive)
   (let* ((spot (point))
          (inhibit-quit t)
@@ -96,7 +98,7 @@
          (code (save-excursion
                  (dotimes (i 2)
                    (when (> (line-number-at-pos) 1)
-                     (previous-line)))
+                     (forward-line -1)))
                  (beginning-of-line)
                  (buffer-substring-no-properties (point) spot)))
 
@@ -139,11 +141,11 @@ Writing English explanations is forbidden. ")
         (goto-char spot)
         (while (search-forward "\\_" end t)
           (backward-char)
-          (delete-backward-char 1 nil)
+          (delete-char -1)
           (setq end (- end 1)))
         (goto-char spot)
         (while (search-forward "```" end t)
-          (delete-backward-char 3 nil)
+          (delete-char -3)
           (setq end (- end 3))))
 
       ;; append generated code to prompt
@@ -151,4 +153,4 @@ Writing English explanations is forbidden. ")
 
 (provide 'jart-copilot)
 
-;;; ansi-mode.el ends here
+;;; jart-copilot.el ends here

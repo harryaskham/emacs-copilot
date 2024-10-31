@@ -71,13 +71,13 @@
   :prefix "jart-copilot-"
   :group 'editing)
 
-(defcustom jart-copilot-bin
-  "ollama"
+(defcustom jart-copilot-bin "ollama"
+  "The inference binary to run."
   :type 'string
   :group 'jart-copilot)
 
-(defcustom jart-copilot-model
-  "llama3.1:1b"
+(defcustom jart-copilot-model "llama3.1:1b"
+  "The model to pass to the runner."
   :type 'string
   :group 'jart-copilot)
 

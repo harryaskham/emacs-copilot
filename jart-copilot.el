@@ -1,4 +1,4 @@
-;;; copilot.el --- Emacs Copilot
+;;; jart-copilot.el --- Emacs Copilot
 
 ;; Copyright 2023 Justine Alexandra Roberts Tunney
 
@@ -66,23 +66,23 @@
 
 ;;; Code:
 
-(defgroup copilot nil
+(defgroup jart-copilot nil
   "Large language model code completion."
-  :prefix "copilot-"
+  :prefix "jart-copilot-"
   :group 'editing)
 
-(defcustom copilot-bin
+(defcustom jart-copilot-bin
   "ollama"
   :type 'string
   :group 'jart-copilot)
 
-(defcustom copilot-model
+(defcustom jart-copilot-model
   "llama3.1:1b"
   :type 'string
   :group 'jart-copilot)
 
 ;;;###autoload
-(defun copilot-complete ()
+(defun jart-copilot-complete ()
   (interactive)
   (let* ((spot (point))
          (inhibit-quit t)
@@ -128,9 +128,9 @@ Writing English explanations is forbidden. ")
 
     ;; run llamafile streaming stdout into buffer catching ctrl-g
     (with-local-quit
-      (call-process copilot-bin nil (list (current-buffer) nil) t
+      (call-process jart-copilot-bin nil (list (current-buffer) nil) t
                     "run"
-                    copilot-model
+                    jart-copilot-model
                     hist))
 
     ;; get rid of most markdown syntax
